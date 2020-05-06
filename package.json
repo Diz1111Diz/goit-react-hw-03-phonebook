@@ -1,8 +1,8 @@
 {
-  "name": "goit-react-hw-02-phonebook",
+  "name": "goit-react-hw-03-phonebook",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://Diz1111Diz.github.io/goit-react-hw-02-phonebook",
+  "homepage": "https://Diz1111Diz.github.io/goit-react-hw-03-phonebook",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -11,6 +11,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
+    "react-toastify": "^5.5.0",
     "styled-components": "^5.1.0",
     "uuid": "^7.0.3"
   },

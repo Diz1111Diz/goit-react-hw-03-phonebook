@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { v1 as uuidv4 } from "uuid";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import findContact from "../../helpers/findContact";
 import { Lable, Input, Button, Form } from "./ContactForm.styles";
+toast.configure();
 
 const formInitialState = {
   name: "",
@@ -12,9 +16,21 @@ const formInitialState = {
 const ContactForm = ({ addNewContact, contacts }) => {
   const [form, setForm] = useState(formInitialState);
 
+  const notify = (name) =>
+    toast.error(`${name} is already in contacts`, {
+      position: toast.POSITION.TOP_CENTER,
+    });
+
   const inputHandler = (e) => {
     const name = e.target.name;
-    const value = e.target.value;
+    let value = "";
+    if (name === "name") {
+      value = e.target.value.replace(/[^A-zА-яЁё\s]+/gi, "");
+    }
+    if (name === "number") {
+      value = e.target.value.replace(/[^\d\s,+,(,)]+/gi, "");
+    }
+
     setForm({ ...form, [name]: value });
   };
 
@@ -29,7 +45,7 @@ const ContactForm = ({ addNewContact, contacts }) => {
 
     const findSimilarName = findContact(contacts, contact);
     if (findSimilarName) {
-      alert(`${contact.name} is already in contacts`);
+      notify(contact.name);
       return;
     }
     addNewContact(contact);
@@ -61,20 +77,16 @@ const ContactForm = ({ addNewContact, contacts }) => {
         />
       </Lable>
 
-      {name.length >= 1 && number >= 1 ? (
-        <Button type="submit" disabled={false}>
-          Add contact
-        </Button>
-      ) : (
-        <Button type="submit" disabled={true}>
-          Add contact
-        </Button>
-      )}
+      <Button type="submit" disabled={!name || !number}>
+        Add contact
+      </Button>
     </Form>
   );
 };
 
 ContactForm.propTypes = {
+  name: PropTypes.string,
+  number: PropTypes.number,
   addNewContact: PropTypes.func.isRequired,
   contacts: PropTypes.array.isRequired,
 };
